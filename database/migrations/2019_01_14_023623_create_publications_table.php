@@ -19,6 +19,7 @@ class CreatePublicationsTable extends Migration
             $table->string('category');
             $table->string('title');
             $table->string('description');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
         });
     }
 

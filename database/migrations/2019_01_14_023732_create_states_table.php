@@ -17,6 +17,7 @@ class CreateStatesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('description');
+            $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');;
         });
     }
 

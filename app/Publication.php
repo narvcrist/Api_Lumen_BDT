@@ -12,14 +12,16 @@ class Publication extends Model
      *
      * @var array
      */
-    protected $fillable = [
+    protected $fillable =[
         'category','title','description'
     ];
     function state(){
         return $this->belongsTo('App\State');
     }
 
-    function users(){
+    function user(){
         return $this->hasMany('App\User');
     }
+    
 }
+

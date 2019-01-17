@@ -17,6 +17,7 @@ class CreateTimesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('time');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
         });
     }
 
