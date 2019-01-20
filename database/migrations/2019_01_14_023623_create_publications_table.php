@@ -18,8 +18,9 @@ class CreatePublicationsTable extends Migration
             $table->timestamps();
             $table->string('category');
             $table->string('title');
-            $table->string('description');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->string('description');                          
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
