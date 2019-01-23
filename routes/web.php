@@ -14,3 +14,12 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['middleware' => []], function () use ($router) {
+    
+    //CRUD User
+   $router->post('/user', ['uses' => 'UserController@post']);
+   $router->get('/user', ['uses' => 'UserController@get']);
+   $router->put('/user', ['uses' => 'UserController@put']);
+   $router->delete('/user', ['uses' => 'UserController@delete']);
+});
