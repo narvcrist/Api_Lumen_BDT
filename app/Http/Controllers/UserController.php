@@ -1,68 +1,61 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 Use Exception;
 use App\User;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class UserController extends Controller
 {
-    function get(Request $data)
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function register(Request $request)
     {
-       $id = $data['id'];
-       if ($id == null) {
-          return User::get();
-       } else {
-          return User::findOrFail($id);
-       }
+        $hasher= app()->make('hash');
+        $name= $request->input('name');
+        $email= $request->input('email');
+        $surname= $request->input('surname');
+        $identification_card= $request->input('identification_card');
+        $description= $request->input('description');
+        $telephone= $request->input('telephone');
+        $password= $hasher->make($request->input('password'));
+
+        $register = user::create([
+            'name'=> $name,
+            'email'=> $email,
+            'surname'=> $surname,
+            'identification_card'=> $identification_card,
+            'description'=> $description,
+            'telephone'=> $telephone,
+            'password'=> $password,
+
+        ]);
+        if($register){
+            $res['success']=true;
+            $res['result']="Success Register";
+            return response($res);
+        }else{
+            $res['success']=false;
+            $res['result']="Failed to Register";
+            return response($res);
+        }
     }
-    function post(Request $data)
-    {
-       try{
-          DB::beginTransaction();
-          $result = $data->json()->all();
-          $user = User::create([
-             'name'=>$result['name'],
-             'surname'=>$result['surname'],
-             'email'=>$result['email'],
-             'password'=>$result['password'],
-             'identification_card'=>$result['identification_card'],
-             'password'=>$result['password'],
-             'description'=>$result['description'],
-             'telephone'=>$result['telephone'],
-          ]);
-          DB::commit();
-       } catch (Exception $e) {
-          return response()->json($e,400);
-       }
-       return response()->json($user,200);
-    }
-    function put(Request $data)
-    {
-       try{
-          DB::beginTransaction();
-          $result = $data->json()->all();
-          $user = User::where('id',$result['id'])->update([
-            'name'=>$result['name'],
-            'surname'=>$result['surname'],
-            'email'=>$result['email'],
-            'password'=>$result['password'],
-            'identification_card'=>$result['identification_card'],
-            'password'=>$result['password'],
-            'description'=>$result['description'],
-            'telephone'=>$result['telephone'],
-          ]);
-          DB::commit();
-       } catch (Exception $e) {
-          return response()->json($e,400);
-       }
-       return response()->json($user,200);
-    }
-    function delete(Request $data)
-    {
-       $result = $data->json()->all();
-       $id = $result['id'];
-       return User::destroy($id);
+
+    public function getUser(Request $request, $id){
+
+        $user = user::where('id',$id)->get();
+        if($user){
+            $res['success']=true;
+            $res['result']=$user;
+            return response($res);
+        }else{
+            $res['success']=false;
+            $res['result']="No se encontro user";
+            return response($res);
+        }
     }
 }

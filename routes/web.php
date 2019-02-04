@@ -12,14 +12,11 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    $res['success']=true;
+    $res['result']="Hello World! que hace aki";
+    return response($res);
 });
 
-$router->group(['middleware' => []], function () use ($router) {
-    
-    //CRUD User
-   $router->post('/user', ['uses' => 'UserController@post']);
-   $router->get('/user', ['uses' => 'UserController@get']);
-   $router->put('/user', ['uses' => 'UserController@put']);
-   $router->delete('/user', ['uses' => 'UserController@delete']);
-});
+$router->post('/login', 'LoginController@index');
+$router->post('/register', 'UserController@register');
+$router->get('/user/{id}',['middleware'=>'auth','uses'=>'UserController@getUser']);
