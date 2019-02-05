@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
-
 class LoginController extends Controller
 {
     /**
@@ -11,13 +9,11 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function index(Request $request)
+    public function login(Request $request)
     {
         $hashar= app()->make('hash');
-
         $password= $request->input('password');
         $email= $request->input('email');
-
         $login = user::where('email',$email)->first();
         if(!$login){
             $res['success']=false;
@@ -40,6 +36,5 @@ class LoginController extends Controller
             }
         }
     }
-
     //
 }

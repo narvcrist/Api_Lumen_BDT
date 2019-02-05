@@ -17,6 +17,7 @@ $router->get('/', function () use ($router) {
     return response($res);
 });
 
-$router->post('/login', 'LoginController@index');
+$router->post('/login', 'LoginController@login');
 $router->post('/register', 'UserController@register');
+$router->post('/publication', 'PublicationController@register');
 $router->get('/user/{id}',['middleware'=>'auth','uses'=>'UserController@getUser']);
